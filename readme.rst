@@ -1,70 +1,148 @@
-###################
-What is CodeIgniter
-###################
+Cette application est basée sur le framework Codeigniter3
 
-CodeIgniter is an Application Development Framework - a toolkit - for people
-who build web sites using PHP. Its goal is to enable you to develop projects
-much faster than you could if you were writing code from scratch, by providing
-a rich set of libraries for commonly needed tasks, as well as a simple
-interface and logical structure to access these libraries. CodeIgniter lets
-you creatively focus on your project by minimizing the amount of code needed
-for a given task.
+I. OUTILS DE DEVELLOPEMENT UTILISES
 
-*******************
-Release Information
-*******************
 
-This repo contains in-development code for future releases. To download the
-latest stable release please visit the `CodeIgniter Downloads
-<https://codeigniter.com/download>`_ page.
+Installation : 
+1. docompresser le fichier vote.zip dans votre serveru Web
+2. créer un base de donnée « vote »
+3. importer le fichier vote.sql
+4. lancer l'application : «  serveur/vote/index.php/welcome »
+5. login de l'administrateur :
+1. login : admin 
+2. mot de passe : admin 
+6. Créer des electeurs ainsique le président de parti
+7. connecter un electeur et voter 
+8. connecter comme administrateur et voir le resultat des vote 
 
-**************************
-Changelog and New Features
-**************************
 
-You can find a list of all changes for each release in the `user
-guide change log <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/changelog.rst>`_.
+Base de données 
 
-*******************
-Server Requirements
-*******************
+SQL 
 
-PHP version 5.6 or newer is recommended.
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 
-It should work on 5.3.7 as well, but we strongly advise you NOT to run
-such old versions of PHP, because of potential security and performance
-issues, as well as missing features.
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
-************
-Installation
-************
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-Please see the `installation section <https://codeigniter.com/user_guide/installation/index.html>`_
-of the CodeIgniter User Guide.
 
-*******
-License
-*******
 
-Please see the `license
-agreement <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/license.rst>`_.
+CREATE SCHEMA IF NOT EXISTS `vote` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
 
-*********
-Resources
-*********
+USE `vote` ;
 
--  `User Guide <https://codeigniter.com/docs>`_
--  `Language File Translations <https://github.com/bcit-ci/codeigniter3-translations>`_
--  `Community Forums <http://forum.codeigniter.com/>`_
--  `Community Wiki <https://github.com/bcit-ci/CodeIgniter/wiki>`_
--  `Community IRC <https://webchat.freenode.net/?channels=%23codeigniter>`_
 
-Report security issues to our `Security Panel <mailto:security@codeigniter.com>`_
-or via our `page on HackerOne <https://hackerone.com/codeigniter>`_, thank you.
 
-***************
-Acknowledgement
-***************
+-- -----------------------------------------------------
 
-The CodeIgniter team would like to thank EllisLab, all the
-contributors to the CodeIgniter project and you, the CodeIgniter user.
+-- Table `vote`.`party`
+
+-- -----------------------------------------------------
+
+CREATE  TABLE IF NOT EXISTS `vote`.`party` (
+
+  `party_id` INT NOT NULL AUTO_INCREMENT COMMENT '	' ,
+
+  `party_name` VARCHAR(45) NULL ,
+
+  `party_logo` VARCHAR(100) NULL ,
+
+  `party_status` TINYINT NULL ,
+
+  PRIMARY KEY (`party_id`) )
+
+ENGINE = InnoDB;
+
+
+
+
+
+-- -----------------------------------------------------
+
+-- Table `vote`.`user`
+
+-- -----------------------------------------------------
+
+CREATE  TABLE IF NOT EXISTS `vote`.`user` (
+
+  `user_id` INT NOT NULL AUTO_INCREMENT ,
+
+  `user_party_id` INT NULL ,
+
+  `party_voted_id` INT NULL ,
+
+  `user_name` VARCHAR(45) NULL ,
+
+  `user_type` TINYINT NULL COMMENT '1 for admin\n2 for voters\n3 for parti head' ,
+
+  `user_status` TINYINT NULL ,
+
+  `user_password` VARCHAR(100) NULL ,
+
+  PRIMARY KEY (`user_id`) ,
+
+  INDEX `fk_user_parti` (`user_party_id` ASC) ,
+
+  INDEX `fk_user_parti1` (`party_voted_id` ASC) ,
+
+  CONSTRAINT `fk_user_parti`
+
+    FOREIGN KEY (`user_party_id` )
+
+    REFERENCES `vote`.`party` (`party_id` )
+
+    ON DELETE NO ACTION
+
+    ON UPDATE NO ACTION,
+
+  CONSTRAINT `fk_user_parti1`
+
+    FOREIGN KEY (`party_voted_id` )
+
+    REFERENCES `vote`.`party` (`party_id` )
+
+    ON DELETE NO ACTION
+
+    ON UPDATE NO ACTION)
+
+ENGINE = InnoDB;
+
+
+
+
+
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+
+
+
+INSERT INTO user (user_name, user_password, user_status, user_type)
+
+VALUES ('admin', SHA1('admin'), 0,1 );
+
+MySQL-Workbench-gpl-5.2.44-win32
+MySQL Workbench est un logiciel de gestion et d’administration de bases de données MySQL créé en 2004.Via une interface graphique intuitive, il permet entre autres, de créer, modifier ou supprimer des tables, des comptes utilisateurs, et d’effectuer toutes les opérations inhérentes à la gestion d’une base de données. C’est un logiciel libre et multiplateforme.
+
+PHP 5.6
+PHP (HypertextPreprocessor) est un langage de programmation libre, principalement utilisé pour produire des pages Web dynamiques via un serveur HTTP, mais pouvant « également fonctionner comme n’importe quel langage interprété de façon locale .PHP est un langage impératif orienté objet.moteurphp
+				
+Apache 2
+Le logiciel libre Apache HTTP Server est un serveur http crée et maintenu au sein de la fondation Apache. C’est le serveur HTTP le plus populaire du World Wide Web. Il est distribué selon les termes de la licence Apache.
+
+MySQL 5.6
+MySQL est un système de gestion de bases de données relationnelles.il est distribué sous une double licence GPL et propriétaire.il fait partie des logiciels de gestion de base de données les plus utilisées au monde, autant par le grand public que par des professionnels en concurrence avec Oracle, Informix et Microsoft SQL Server.
+			
+Framework php (CodeIgniter)
+CodeIgniter est un Framework libre écrit en PHP. Il suit le motif de conception MVC et s’inspire du fonctionnement de Rails.
+
+Framework CSS (Bootstrap)
+Bootstrap est une collection d’outils utile à la création de design de sites et d’applications web.C ‘est un ensemble qui contient des codes JavaScript et CSS.Il permet de construire facilement desformulaires, desboutons, des interfaces web. outils de navigations et autre élémentsinteractifs. C’est une bibliothèque libre.
+				
